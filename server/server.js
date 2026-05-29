@@ -42,6 +42,9 @@ const submissionSchema = new mongoose.Schema({
   role: { type: String, required: true, enum: ['Scholar', 'Mentor', 'Sponsor'] },
   govId: { type: String, unique: true, sparse: true }, // Sparse unique index to prevent duplicates for Scholars
   message: { type: String, required: true },
+  linkedin: { type: String },
+  github: { type: String },
+  socialMedia: { type: String },
   status: { type: String, required: true, default: 'Pending', enum: ['Pending', 'Reviewed', 'Accepted', 'Declined'] },
   createdAt: { type: Date, default: Date.now }
 });
@@ -163,7 +166,7 @@ app.get('/api/status', (req, res) => {
 
 // POST /api/submissions - Public endpoint to submit application/contact form
 app.post('/api/submissions', async (req, res) => {
-  const { name, email, phone, role, message, govId } = req.body;
+  const { name, email, phone, role, message, govId, linkedin, github, socialMedia } = req.body;
 
   // Real-time server-side validations
   if (!name || name.trim().length < 2) {
@@ -215,7 +218,10 @@ app.post('/api/submissions', async (req, res) => {
         phone,
         role, 
         message, 
-        govId: role === 'Scholar' ? govId.trim().toUpperCase() : undefined 
+        govId: role === 'Scholar' ? govId.trim().toUpperCase() : undefined,
+        linkedin,
+        github,
+        socialMedia
       });
     } else {
       // Save to JSON Database
@@ -228,6 +234,9 @@ app.post('/api/submissions', async (req, res) => {
         role,
         message,
         govId: role === 'Scholar' ? govId.trim().toUpperCase() : undefined,
+        linkedin,
+        github,
+        socialMedia,
         status: 'Pending',
         createdAt: new Date().toISOString()
       };

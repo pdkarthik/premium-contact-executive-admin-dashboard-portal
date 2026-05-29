@@ -149,6 +149,13 @@ const LandingPage = ({ onToggleAdmin, apiBaseUrl, theme, onToggleTheme }) => {
         // Reset form
         setFormData({ name: '', email: '', phone: '', role: formData.role, message: '', linkedin: '', github: '', socialMedia: '', govId: '' });
         setExpandOptions(false);
+        // Scroll to the start of the card container smoothly
+        setTimeout(() => {
+          const element = document.getElementById('apply-fold');
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }, 80);
       } else {
         setErrors({ submit: data.error || 'Server error. Submission failed.' });
       }
