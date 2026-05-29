@@ -7,14 +7,14 @@ function App() {
     return sessionStorage.getItem('active_view') || 'landing';
   });
   const [theme, setTheme] = useState(() => {
-    return localStorage.getItem('theme') || 'light';
+    return sessionStorage.getItem('theme') || 'light';
   });
 
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme);
+    sessionStorage.setItem('theme', theme);
   }, [theme]);
 
   useEffect(() => {
