@@ -102,8 +102,18 @@ const AdminPortal = ({ onToggleLanding, apiBaseUrl, theme, onToggleTheme }) => {
     onToggleLanding();
   };
 
-  // CRUD: Update Submission Status
+  // CRUD: Update Submission Status (with Optimistic Updates)
   const handleStatusUpdate = async (id, newStatus) => {
+    // 1. Save original status for rollback if the network or backend request fails
+    const originalSubmission = submissions.find(s => s._id === id);
+    const originalStatus = originalSubmission ? originalSubmission.status : 'Pending';
+
+    // 2. Perform Optimistic Update (Update UI instantly)
+    setSubmissions(prev => prev.map(s => s._id === id ? { ...s, status: newStatus } : s));
+    if (selectedSubmission && selectedSubmission._id === id) {
+      setSelectedSubmission(prev => ({ ...prev, status: newStatus }));
+    }
+
     const token = localStorage.getItem('she_can_admin_token');
     try {
       const response = await fetch(`${apiBaseUrl}/admin/submissions/${id}`, {
@@ -115,16 +125,21 @@ const AdminPortal = ({ onToggleLanding, apiBaseUrl, theme, onToggleTheme }) => {
         body: JSON.stringify({ status: newStatus })
       });
       const data = await response.json();
-      if (response.ok && data.success) {
-        // Update local state
-        setSubmissions(prev => prev.map(s => s._id === id ? { ...s, status: newStatus } : s));
+      
+      // If the backend fails, rollback UI state
+      if (!response.ok || !data.success) {
+        setSubmissions(prev => prev.map(s => s._id === id ? { ...s, status: originalStatus } : s));
         if (selectedSubmission && selectedSubmission._id === id) {
-          setSelectedSubmission(prev => ({ ...prev, status: newStatus }));
+          setSelectedSubmission(prev => ({ ...prev, status: originalStatus }));
         }
-      } else {
         alert(data.error || 'Failed to update application status.');
       }
     } catch (err) {
+      // If a network error occurs, rollback UI state
+      setSubmissions(prev => prev.map(s => s._id === id ? { ...s, status: originalStatus } : s));
+      if (selectedSubmission && selectedSubmission._id === id) {
+        setSelectedSubmission(prev => ({ ...prev, status: originalStatus }));
+      }
       alert('Network error updating status.');
     }
   };
