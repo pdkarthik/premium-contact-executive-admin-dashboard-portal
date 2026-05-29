@@ -4,7 +4,7 @@ import AdminPortal from './components/AdminPortal';
 
 function App() {
   const [view, setView] = useState(() => {
-    return localStorage.getItem('active_view') || 'landing';
+    return sessionStorage.getItem('active_view') || 'landing';
   });
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem('theme') || 'light';
@@ -18,7 +18,7 @@ function App() {
   }, [theme]);
 
   useEffect(() => {
-    localStorage.setItem('active_view', view);
+    sessionStorage.setItem('active_view', view);
   }, [view]);
 
   const toggleTheme = () => {
