@@ -2,6 +2,8 @@
 
 A state-of-the-art, high-fidelity MERN full-stack application. It delivers a highly refined, premium landing page experience featuring floating background gradients, glassmorphism UI elements, strict real-time client & server validation, and a secured admin dashboard to review applicant registrations.
 
+🔗 **Production Live URL:** [https://premium-contact-executive-admin-das.vercel.app](https://premium-contact-executive-admin-das.vercel.app)
+
 ---
 
 ## 🎨 Product Features (User's Perspective)
@@ -55,6 +57,7 @@ graph TD
 *   **Pure CSS Analytics Distribution Chart**: A beautifully scaled custom column chart showing the ratio of applications by role in real-time. Bars dynamically shift height based on live database values.
 *   **Interactive Applicants Table**: A responsive tabular layout displaying critical applicant metrics with real-time text-search indexing, status filtering, and quick actions.
 *   **Applicant Detail Drawer**: Clicking any applicant opens a sliding, side-drawer window detailing their full message, contact phone, timestamps, and active status controls.
+*   **Professional & Social Badge Detection**: Automatically detects links submitted by applicants. Renders custom-styled, interactive brand tags for **GitHub**, **LinkedIn / Portfolio** (Scholars/Mentors), and auto-detects/applies native branding, custom SVGs, and colors for **Facebook** and **Instagram** links (Sponsors).
 *   **Interactive Administrative Actions**: Administrators can seamlessly change applicant status (`Pending`, `Reviewed`, `Accepted`, `Declined`) which instantly saves to the active database, or permanently delete spam/test submissions.
 
 ---
